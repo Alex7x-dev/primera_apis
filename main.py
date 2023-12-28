@@ -14,14 +14,20 @@ def user_action(id):
                 return user_new_get
         for user in allUsers:
             if user.get('id') != id:
-                return 'usuario no valido', 404
+                return jsonify({'error_message': 'usuario no valido'}), 404
     else: ##
+        user_found = None
         for user in allUsers:
             if user.get('id') == id:
-                allUsers.remove(user)
-                return jsonify(user)
-            else:
-                return 'usuario no existe', 404
+                user_found = user
+                break
+            
+        if user_found:
+            allUsers.remove(user_found)
+            return jsonify(user_found)
+        else:
+            return jsonify({'error_message': 'usuario no valido'}), 404
+
         # if request.method == 'GET':                               # VALIDAR QUE EL USUARIO EXISTA ANTES DE OBTENER LA INFO O DE BORRARLO, CASO CONTRARIO DEVOLVER 404
     #     return jsonify(allUsers[int(id)])
     # else:
